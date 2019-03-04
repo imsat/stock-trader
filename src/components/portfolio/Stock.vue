@@ -15,13 +15,14 @@
             type="number"
             class="col-sm-6 form-control float-left"
             placeholder="Quantity"
+            :class="{'is-invalid': insufficientQuantity}"
           >
           <div class="col-sm-6">
             <button
               @click="sellStock"
-              :disabled="quantity <= 0 || Number.isInteger(quantity)"
+              :disabled="isInt || insufficientQuantity"
               class="btn btn-primary btn-sm float-right"
-            >Sell</button>
+            >{{insufficientQuantity ? 'Not Enough Stocks' : 'Sell'}}</button>
           </div>
         </div>
       </div>
@@ -38,6 +39,15 @@
     data(){
       return {
         quantity: 0
+      }
+    },
+    computed: {
+      isInt(){
+        return this.quantity <= 0 || Number.isInteger(this.quantity)
+      },
+      insufficientQuantity(){
+        return this.quantity > this.stock.quantity
+
       }
     },
     methods: {

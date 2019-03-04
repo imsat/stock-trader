@@ -3,14 +3,25 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import store from './store/index'
+import axios from 'axios'
 
-window.$ = window.jQuery = require('jquery')
+// window.$ = window.jQuery = require('jquery')
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import store from './store/index'
+
 Vue.config.productionTip = false
 
+Vue.use(axios)
 
+// try to connect firebase but failed
+// axios.options.root = 'firebase_url'
+
+
+
+Vue.filter('currency', (value) => {
+  return '$' + value.toLocaleString()
+})
 
 /* eslint-disable no-new */
 new Vue({

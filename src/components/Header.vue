@@ -13,26 +13,51 @@
 
          </ul>
          <ul class="navbar-nav">
-           <li class="nav-item"><a href="#" class="nav-link">End Day</a></li>
+           <li class="nav-item"><a href="#" @click="endDay" class="nav-link">End Day</a></li>
            <li class="nav-item dropdown">
              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                Save & Load
              </a>
              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-               <a class="dropdown-item" href="#">Save Data</a>
+               <a class="dropdown-item" href="#" @click="saveData">Save Data</a>
                <div class="dropdown-divider"></div>
                <a class="dropdown-item" href="#">Load Data</a>
              </div>
            </li>
          </ul>
+         <strong class="navbar-text">Funds: {{funds | currency}}</strong>
+
        </div>
      </nav>
    </div>
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
     export default {
-        name: "Header"
+        name: "Header",
+      computed: {
+        funds(){
+          return this.$store.getters.funds
+        }
+      },
+      methods: {
+          ...mapActions([
+            'randomizeStocks'
+          ]),
+          endDay(){
+            this.randomizeStocks()
+          },
+          saveData(){
+              const data = {
+                funds: this.$store.getters.funds,
+                stockPortfolio: this.$store.getters.stockPortfolio(),
+                stocks: this.$store.getters.s
+              }
+              this.axios.put('data.json', data)
+          }
+
+      }
     }
 </script>
 

@@ -15,13 +15,14 @@
               type="number"
               class="col-sm-6 form-control float-left"
               placeholder="Quantity"
+              :class="{'is-invalid': insufficientFunds}"
             >
             <div class="col-sm-6">
               <button
                 @click.prevent="buyStock"
-                :disabled="quantity <= 0 || Number.isInteger(quantity)"
+                :disabled="isInt || insufficientFunds"
                 class="btn btn-primary btn-sm float-right"
-              >Buy</button>
+              >{{insufficientFunds ? 'Insufficient Funds' : 'Buy'}}</button>
             </div>
           </div>
         </div>
@@ -37,6 +38,18 @@
       data(){
           return {
             quantity: 0
+          }
+      },
+      computed: {
+          isInt(){
+            return this.quantity <= 0 || Number.isInteger(this.quantity)
+          },
+          funds(){
+              return this.$store.getters.funds
+          },
+          insufficientFunds(){
+            return this.quantity * this.stock.price > this.funds
+
           }
       },
       methods: {
